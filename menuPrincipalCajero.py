@@ -22,7 +22,7 @@ class MenuCajero:
             if opcion == "5":
                 break
             elif opcion == "1":
-                print("Su saldo es de: $" + str(self.saldo))
+                print("\nSu saldo es de: $" + str(self.saldo))
             elif opcion == "2":
                 self.hacerRetiro()
             elif opcion == "3":
@@ -73,7 +73,7 @@ class MenuCajero:
             self.saldo -= monto
             bc.retiro(self.rut,self.dv,self.id,self.saldo,monto)
             print("\nRETIRO: $" + str(monto))
-            print("\nSALDO: $" + str(self.saldo))
+            print("SALDO: $" + str(self.saldo))
 
     def deposito(self):
         monto = self.ingresarMonto("depositar")
@@ -83,7 +83,7 @@ class MenuCajero:
             self.saldo += monto
             bc.deposito(self.rut,self.dv,self.id,self.saldo,monto)
             print("\nDEPOSITO: $" + str(monto))
-            print("\nSALDO: $" + str(self.saldo))
+            print("SALDO: $" + str(self.saldo))
 
     def ingresarMonto(self, tipoOperacion):
         while True:
@@ -94,8 +94,8 @@ class MenuCajero:
                 monto = -2
             else:
                 try:
-                    if float(monto) < 0:
-                        print("No se puede ingresar montos negativos")
+                    if float(monto) <= 0:
+                        print("No se puede ingresar montos negativos o cero (0)")
                         monto = -1
                 except:
                     print("Debe ingresar un monto valido")
