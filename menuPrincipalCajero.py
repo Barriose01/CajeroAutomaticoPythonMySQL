@@ -41,7 +41,7 @@ class MenuCajero:
             cuenta = cn.obtenerInfoCuenta(self.rut,self.dv)
             self.saldo = cuenta[0][6] #Con [0] ingreso a la tupla. Con [6] ingreso al campo 'saldo'
         except:
-            print("Error al obtener el saldo")
+            print("\nError al obtener el saldo")
         return self.saldo
 
     def hacerRetiro(self):
@@ -83,7 +83,7 @@ class MenuCajero:
                 print("\nRETIRO: $" + str(monto))
                 print("SALDO: $" + str(self.saldo))
             except:
-                print("Error al realizar el retiro")
+                print("\nError al realizar el retiro")
 
     def deposito(self):
         monto = self.ingresarMonto("depositar")
@@ -96,7 +96,7 @@ class MenuCajero:
                 print("\nDEPOSITO: $" + str(monto))
                 print("SALDO: $" + str(self.saldo))
             except:
-                print("Error al realizar el deposito")
+                print("\nError al realizar el deposito")
 
     def transferencia(self):
         while True:
@@ -107,39 +107,42 @@ class MenuCajero:
             dvTransferencia = input("Ingrese el dv de la persona a transferir: ").lower().strip()
             if dvTransferencia == "q":
                 break
-            cuentaValida = cn.cuentaValida(rutTransferencia,dvTransferencia, "1111") #Hice hardcode con la clave. No se va a hacer nada con esto.
-                                                                                    #esto es solo para que funcione el metodo
-            if cuentaValida == True:
-                cuenta = cn.obtenerInfoCuenta(rutTransferencia,dvTransferencia)
-                if len(cuenta) > 0:
-                    saldoTransferencia = cuenta[0][6] #Con [0] ingreso a la tupla. Con [6] ingreso al campo 'saldo'
-                    idTransferencia = cuenta[0][0] #Con el segundo [0] accedo al id
-                    monto = self.ingresarMonto("transferir")
-                    if monto == -1 or monto == -2:
-                        break
-                    else:
-                        if monto > self.saldo:
-                            print("\nNo tienes saldo suficiente para realizar esta operacion")
-                        else:
-                            self.saldo -= monto
-                            saldoTransferencia += monto
-                            try:
-                                bc.transferencia(self.rut,self.dv,self.id,self.saldo,rutTransferencia,dvTransferencia,idTransferencia,saldoTransferencia,monto)
-                                print("\nLa transferencia se ha realizado con exito")
-                                print("\nMONTO: $" + str(monto))
-                                print("SALDO: $" + str(self.saldo))
-                            except:
-                                print("\nError al realizar la transferencia")
-                        pass
-                else:
-                    print("\nEl usuario ingresado no esta registrado")
+            if rutTransferencia == self.rut and dvTransferencia == self.dv:
+                print("\nNo es posible hacerte una transferencia a ti mismo")
             else:
-                print("\nLos datos ingresados no son validos")
+                cuentaValida = cn.cuentaValida(rutTransferencia,dvTransferencia, "1111") #Hice hardcode con la clave. No se va a hacer nada con esto.
+                                                                                        #esto es solo para que funcione el metodo
+                if cuentaValida == True:
+                    cuenta = cn.obtenerInfoCuenta(rutTransferencia,dvTransferencia)
+                    if len(cuenta) > 0:
+                        saldoTransferencia = cuenta[0][6] #Con [0] ingreso a la tupla. Con [6] ingreso al campo 'saldo'
+                        idTransferencia = cuenta[0][0] #Con el segundo [0] accedo al id
+                        monto = self.ingresarMonto("transferir")
+                        if monto == -1 or monto == -2:
+                            break
+                        else:
+                            if monto > self.saldo:
+                                print("\nNo tienes saldo suficiente para realizar esta operacion")
+                            else:
+                                self.saldo -= monto
+                                saldoTransferencia += monto
+                                try:
+                                    bc.transferencia(self.rut,self.dv,self.id,self.saldo,rutTransferencia,dvTransferencia,idTransferencia,saldoTransferencia,monto)
+                                    print("\nLa transferencia se ha realizado con exito")
+                                    print("\nMONTO: $" + str(monto))
+                                    print("SALDO: $" + str(self.saldo))
+                                except:
+                                    print("\nError al realizar la transferencia")
+                            pass
+                    else:
+                        print("\nEl usuario ingresado no esta registrado")
+                else:
+                    print("\nLos datos ingresados no son validos")
             break
 
     def ingresarMonto(self, tipoOperacion):
         while True:
-            print("Ingrese el monto a " + tipoOperacion)
+            print("\nIngrese el monto a " + tipoOperacion)
             print("Presione (q) para volver al menu anterior")
             monto = input().lower().strip()
             if monto == "q":
@@ -171,7 +174,7 @@ class MenuCajero:
             else:
                 print("\nNo hay movimientos para mostrar")
         except:
-            print("Error al mostrar los movimientos")
+            print("\nError al mostrar los movimientos")
         
 
 		   
