@@ -1,14 +1,14 @@
 import mysql.connector
 class Conexion:
-    #try:
-    db = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        database="cajeroAutomatico"
-    )
-    cursor = db.cursor()
-    #except:
-       #print("Error al hacer la conexion a la base de datos")
+    try:
+        db = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            database="cajeroAutomatico"
+        )
+        cursor = db.cursor()
+    except:
+       print("Error al hacer la conexion a la base de datos")
 
     def cuentaValida(self,rut,dv,clave): #Verifica si los datos ingresados son validos
         cuentaEsValida = True
