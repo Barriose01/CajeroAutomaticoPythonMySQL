@@ -2,7 +2,6 @@ from BDRegistroEInicio import Conexion
 from menuPrincipalCajero import MenuCajero
 cn = Conexion()
 
-
 class MenuInicio:
     def registroDeUsuario(self):
         while True:
@@ -33,14 +32,16 @@ class MenuInicio:
                 if cuentaValida == False:
                     print("\nDebe ingresar informacion valida. Revise su rut, dv o clave")
                 else:
-                    cuentaExiste = cn.obtenerInfoCuenta(rut,dv)
-                    if len(cuentaExiste) > 0:
-                        print("\nLo sentimos, la cuenta ingresada ya existe")
-                    else:
-                        cn.registrarUsuario(rut,dv,clave,nombre,apellido)
-                        cn.registrarLog(rut,dv)
-                        print("\nLa cuenta ha sido registrada con exito")
-                        break
+                    try:
+                        cuentaExiste = cn.obtenerInfoCuenta(rut,dv)
+                        if len(cuentaExiste) > 0:
+                            print("\nLo sentimos, la cuenta ingresada ya existe")
+                        else:
+                            cn.registrarUsuario(rut,dv,clave,nombre,apellido)
+                            cn.registrarLog(rut,dv)
+                    except:
+                        print("Error al registrar la cuenta")
+                    break
 
     def iniciarSesion(self):
         while True:
@@ -55,17 +56,21 @@ class MenuInicio:
             clave = input("Ingrese una clave de 4 digitos: ").strip()
             if clave == "q":
                 break
-            cuenta = cn.obtenerInfoCuenta(rut,dv) #Este metodo siempre devolvera una sola tupla dentro de una lista
-            if len(cuenta) > 0:
-                if clave == str(cuenta[0][5]): #Con [0] accedo a la tupla. Con [5] accedo al campo 'clave'
-                    id = cuenta[0][0] #El segundo [0] representa la posicion donde se encuentra el id
-                    mc = MenuCajero(rut,dv,id)
-                    mc.menuPrincipal()
-                    break
+            try:
+                cuenta = cn.obtenerInfoCuenta(rut,dv) #Este metodo siempre devolvera una sola tupla dentro de una lista
+                if len(cuenta) > 0:
+                    if clave == str(cuenta[0][5]): #Con [0] accedo a la tupla. Con [5] accedo al campo 'clave'
+                        id = cuenta[0][0] #El segundo [0] representa la posicion donde se encuentra el id
+                        mc = MenuCajero(rut,dv,id)
+                        mc.menuPrincipal()
+                        break
+                    else:
+                        print("\nLa clave que ingreso es incorrecta")
                 else:
-                    print("\nLa clave que ingreso es incorrecta")
-            else:
-                print("\nLa cuenta ingresada no esta registrada")
+                    print("\nLa cuenta ingresada no esta registrada")
+            except:
+                print("Error al iniciar sesion")
+            break
 
 while True:
     menu = MenuInicio()

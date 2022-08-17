@@ -1,11 +1,14 @@
 import mysql.connector
 class Conexion:
+    #try:
     db = mysql.connector.connect(
         host="localhost",
         user="root",
         database="cajeroAutomatico"
     )
     cursor = db.cursor()
+    #except:
+       #print("Error al hacer la conexion a la base de datos")
 
     def cuentaValida(self,rut,dv,clave): #Verifica si los datos ingresados son validos
         cuentaEsValida = True
@@ -32,9 +35,11 @@ class Conexion:
         return cuentaEsValida
         
     def registrarUsuario(self,rut,dv,clave,nombre,apellido):
+       
         sql = "INSERT INTO cuentaUsuario(rut,dv,clave,nombre,apellido) VALUES(%s,%s,%s,%s,%s)"
         self.cursor.execute(sql,(rut,dv,clave,nombre,apellido))
         self.db.commit()
+        
         
     def obtenerInfoCuenta(self,rut,dv):
         cuenta = []
@@ -50,6 +55,7 @@ class Conexion:
         sql = "INSERT INTO logCuentaUsuario(idUsuario,informacion) VALUES(%s, %s)"
         self.cursor.execute(sql,(id,"SE CREO UNA NUEVA CUENTA"))
         self.db.commit()
+        print("La cuenta ha sido registrada con exito")
 
     
         

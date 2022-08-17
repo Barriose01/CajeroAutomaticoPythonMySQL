@@ -12,6 +12,11 @@ class BDCajero():
         cn.cursor.execute(sql,(rut,dv,id,saldo,monto))
         cn.db.commit()
 
+    def transferencia(self, rut,dv,id,saldo,rutTransferencia,dvTransferencia, idTransferencia, saldoTransferencia, monto):
+        sql = "CALL transferencia(%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+        cn.cursor.execute(sql,(rut,dv,id,saldo,rutTransferencia,dvTransferencia,idTransferencia,saldoTransferencia,monto))
+        cn.db.commit()
+
     def movimientos(self,id):
         movimientos = []
         sql = "SELECT monto, informacion, fecha FROM vistaLog WHERE id = %s"
